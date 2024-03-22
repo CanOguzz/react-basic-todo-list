@@ -19,7 +19,9 @@ const ToDoList = () => {
     
   };
 
-  const deleteTask = (index) => {};
+  const deleteTask = (index) => {
+    setTasks(tasks.filter((_, i) => i !==index))
+  };
 
   const moveTaskUp = (index) => {};
 
