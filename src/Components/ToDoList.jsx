@@ -4,6 +4,7 @@ const ToDoList = () => {
   const [tasks, setTasks] = useState(["Eat", "Sleep", "Code"]);
   const [isUpdating, setIsUpdating] = useState(false);
   const [newTask, setNewTask] = useState("");
+  const[editingTask, setEditingTask] = useState("");
 
   //function for text box input
   const handleInputChange = (e) => {
@@ -46,12 +47,14 @@ const ToDoList = () => {
   };
 
   const updateTask = (index) => {
-    const updatedTasks = [...tasks];
-    const newTask = prompt("Enter new task", updatedTasks[index]);
-    if (newTask.trim() !== "") {
-      updatedTasks[index] = newTask;
-      setTasks(updatedTasks);
-    }
+    setIsUpdating(true);
+    setEditingTask(index);
+    // const updatedTasks = [...tasks];
+    // const newTask = prompt("Enter new task", updatedTasks[index]);
+    // if (newTask.trim() !== "") {
+    //   updatedTasks[index] = newTask;
+    //   setTasks(updatedTasks);
+    // }
   };
 
   return (
@@ -72,7 +75,7 @@ const ToDoList = () => {
       <ol>
         {tasks.map((task, index) => (
           <li key={index}>
-            {isUpdating && index === 0 ? (
+            { editingTask  === index ? (
               <input
                 type="text"
                 value={newTask}
