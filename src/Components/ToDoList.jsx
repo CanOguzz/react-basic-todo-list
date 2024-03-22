@@ -2,10 +2,21 @@ import React, { useState, useEffect } from "react";
 import "./ToDoList.css";
 const ToDoList = () => {
   const [tasks, setTasks] = useState(["Eat", "Sleep", "Code"]);
-  const [isUpdating, setIsUpdating] = useState(false);
+ 
   const [newTask, setNewTask] = useState("");
-  const[editingTask, setEditingTask] = useState("");
+  const [editingTask, setEditingTask] = useState("");
+  const [updatedTaskName, setUpdatedTaskName] = useState("");
 
+  const updateTaskFnc = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[index] = updatedTaskName;
+    setTasks(updatedTasks);
+    setEditingTask(null);
+    setUpdatedTaskName("");
+  };
+  const handleSubmit = (e) => {
+    setUpdatedTaskName(e.target.value);
+  };
   //function for text box input
   const handleInputChange = (e) => {
     setNewTask(e.target.value);
@@ -46,17 +57,6 @@ const ToDoList = () => {
     }
   };
 
-  const updateTask = (index) => {
-    setIsUpdating(true);
-    setEditingTask(index);
-    // const updatedTasks = [...tasks];
-    // const newTask = prompt("Enter new task", updatedTasks[index]);
-    // if (newTask.trim() !== "") {
-    //   updatedTasks[index] = newTask;
-    //   setTasks(updatedTasks);
-    // }
-  };
-
   return (
     <div className="to-do-list">
       <h1>To-Do-List</h1>
@@ -75,12 +75,8 @@ const ToDoList = () => {
       <ol>
         {tasks.map((task, index) => (
           <li key={index}>
-            { editingTask  === index ? (
-              <input
-                type="text"
-                value={newTask}
-                onChange={(e) => setNewTask(e.target.value)}
-              />
+            {editingTask === index ? (
+              <input type="text" value={updatedTaskName} onChange={handleSubmit} />
             ) : (
               <span className="text">{task}</span>
             )}
@@ -93,11 +89,17 @@ const ToDoList = () => {
             <button className="move-button" onClick={() => moveTaskDown(index)}>
               👇
             </button>
-            <button className="move-button" onClick={() => updateTask(index)}
-             
-              
-              >
-               {editingTask === index ? 'SUBMIT' : 'EDIT'}
+            <button
+              className="move-button"
+              onClick={() => {
+                setEditingTask(index);
+                if (editingTask === index) {
+                  updateTaskFnc(index);
+                } else {
+                }
+              }}
+            >
+              {editingTask === index ? "SUBMIT" : "EDIT"}
             </button>
           </li>
         ))}
