@@ -93,8 +93,11 @@ const ToDoList = () => {
             <button className="move-button" onClick={() => moveTaskDown(index)}>
               👇
             </button>
-            <button className="move-button" onClick={() => updateTask(index)}>
-              EDIT
+            <button className="move-button" onClick={() => updateTask(index)}
+             
+              
+              >
+               {editingTask === index ? 'SUBMIT' : 'EDIT'}
             </button>
           </li>
         ))}
