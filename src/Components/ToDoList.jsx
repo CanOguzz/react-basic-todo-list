@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ToDoList.css";
 const ToDoList = () => {
   const [tasks, setTasks] = useState(["Eat", "Sleep", "Code"]);
-  const [task, setTask] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false);
   const [newTask, setNewTask] = useState("");
 
   //function for text box input
@@ -22,9 +22,9 @@ const ToDoList = () => {
   };
 
   const moveTaskUp = (index) => {
-    if(index === 0){
+    if (index === 0) {
       return;
-    }else{
+    } else {
       const updatedTasks = [...tasks];
       const temp = updatedTasks[index];
       updatedTasks[index] = updatedTasks[index - 1];
@@ -34,13 +34,22 @@ const ToDoList = () => {
   };
 
   const moveTaskDown = (index) => {
-    if(index === tasks.length - 1){
+    if (index === tasks.length - 1) {
       return;
-    }else{
+    } else {
       const updatedTasks = [...tasks];
       const temp = updatedTasks[index];
       updatedTasks[index] = updatedTasks[index + 1];
       updatedTasks[index + 1] = temp;
+      setTasks(updatedTasks);
+    }
+  };
+
+  const updateTask = (index) => {
+    const updatedTasks = [...tasks];
+    const newTask = prompt("Enter new task", updatedTasks[index]);
+    if (newTask.trim() !== "") {
+      updatedTasks[index] = newTask;
       setTasks(updatedTasks);
     }
   };
@@ -63,7 +72,15 @@ const ToDoList = () => {
       <ol>
         {tasks.map((task, index) => (
           <li key={index}>
-            <span className="text">{task}</span>
+            {isUpdating && index === 0 ? (
+              <input
+                type="text"
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
+              />
+            ) : (
+              <span className="text">{task}</span>
+            )}
             <button className="delete-button" onClick={() => deleteTask(index)}>
               DELETE
             </button>
@@ -72,6 +89,9 @@ const ToDoList = () => {
             </button>
             <button className="move-button" onClick={() => moveTaskDown(index)}>
               👇
+            </button>
+            <button className="move-button" onClick={() => updateTask(index)}>
+              EDIT
             </button>
           </li>
         ))}
